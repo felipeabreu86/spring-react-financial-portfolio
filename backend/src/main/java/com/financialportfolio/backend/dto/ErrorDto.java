@@ -12,11 +12,11 @@ public class ErrorDto {
         this.error = error;
     }
 
-    public String getCampo() {
+    public String getField() {
         return field;
     }
 
-    public String getErro() {
+    public String getError() {
         return error;
     }
 
