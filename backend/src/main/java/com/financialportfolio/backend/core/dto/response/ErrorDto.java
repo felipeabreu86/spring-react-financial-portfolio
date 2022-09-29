@@ -1,4 +1,4 @@
-package com.financialportfolio.backend.dto;
+package com.financialportfolio.backend.core.dto.response;
 
 public class ErrorDto {
 

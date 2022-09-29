@@ -1,4 +1,4 @@
-package com.financialportfolio.backend.service;
+package com.financialportfolio.backend.domain.service;
 
 import java.util.Date;
 import java.util.Optional;
@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.security.core.Authentication;
 
-import com.financialportfolio.backend.dto.UserDataDto;
+import com.financialportfolio.backend.core.dto.internal.UserDataDto;
 
 public interface TokenService {
 

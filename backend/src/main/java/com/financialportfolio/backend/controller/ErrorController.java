@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.financialportfolio.backend.dto.ErrorDto;
+import com.financialportfolio.backend.core.dto.response.ErrorDto;
 
 @RestControllerAdvice
 public class ErrorController {

@@ -1,4 +1,4 @@
-package com.financialportfolio.backend.filter;
+package com.financialportfolio.backend.core.filter;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -12,18 +12,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.financialportfolio.backend.dto.UserDataDto;
-import com.financialportfolio.backend.service.TokenService;
+import com.financialportfolio.backend.core.dto.internal.UserDataDto;
+import com.financialportfolio.backend.domain.service.TokenService;
 
 public class BearerTokenFilter extends OncePerRequestFilter {
 
+    /**
+     * Regras de negócio relacionadas ao Token.
+     */
     private TokenService tokenService;
 
-    /**
-     * Construtor.
-     * 
-     * @param tokenService - regras de negócio relacionadas ao Token.
-     */
     public BearerTokenFilter(TokenService tokenService) {
         this.tokenService = tokenService;
     }
@@ -55,7 +53,7 @@ public class BearerTokenFilter extends OncePerRequestFilter {
         
         if (userData.isPresent()) {
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                    userData.get().getEmail(),
+                    userData.get().getUserId(),
                     null, 
                     userData.get().getAuthorities());
 
