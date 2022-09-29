@@ -45,21 +45,22 @@ public class AuthenticationController {
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<TokenDto> createToken(@RequestBody @Valid LoginFormDto loginFormDto) {
 
-        Optional<String> token = Optional.empty();
+        ResponseEntity<TokenDto> response = null;
 
         try {
-            token = tokenService.createToken(authManager.authenticate(loginFormDto.toAuthenticationObject()));
-        } catch (UsernameNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        } catch (BadCredentialsException e) {
-            return ResponseEntity.badRequest().build();
+            Optional<String> token = tokenService
+                    .createToken(authManager.authenticate(loginFormDto.toAuthenticationObject()));
+            
+            response = token.isPresent() 
+                    ? ResponseEntity.ok(new TokenDto(token.get(), "Bearer"))
+                    : ResponseEntity.badRequest().build();            
+        } catch (UsernameNotFoundException | BadCredentialsException e) {
+            response = ResponseEntity.badRequest().build();
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
+            response = ResponseEntity.internalServerError().build();
         }
 
-        return token.isPresent() 
-                ? ResponseEntity.ok(new TokenDto(token.get(), "Bearer"))
-                : ResponseEntity.badRequest().build();
+        return response;
     }
 
     /**

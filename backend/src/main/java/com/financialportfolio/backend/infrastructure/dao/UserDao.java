@@ -1,4 +1,4 @@
-package com.financialportfolio.backend.infrastructure.repository;
+package com.financialportfolio.backend.infrastructure.dao;
 
 import java.util.Optional;
 
@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 import com.financialportfolio.backend.domain.model.User;
 
 @Repository
-public interface UsuarioRepository extends JpaRepository<User, Long> {
-
+public interface UserDao extends JpaRepository<User, Long> {
+    
     /**
      * Realiza a busca por usuário no banco de dados filtrando pelo email.
      * 

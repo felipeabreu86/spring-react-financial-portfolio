@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
 
-import com.financialportfolio.backend.domain.type.AuthorityType;
+import com.financialportfolio.backend.domain.model.type.AuthorityType;
 
 @Entity
 @Table(name = "authorities")

@@ -20,7 +20,9 @@ public final class CastUtils {
      * @return lista do tipo T.
      */
     public static <T> List<T> castList(Class<? extends T> clazz, Collection<?> rawCollection) {
+        
         List<T> result = new ArrayList<>(rawCollection.size());
+        
         for (Object o : rawCollection) {
             try {
                 result.add(clazz.cast(o));
@@ -28,6 +30,7 @@ public final class CastUtils {
                 System.out.println(e.getMessage());
             }
         }
+        
         return result;
     }
 

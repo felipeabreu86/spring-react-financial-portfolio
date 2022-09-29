@@ -1,32 +1,32 @@
 package com.financialportfolio.backend.domain.service.impl;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.financialportfolio.backend.domain.model.User;
-import com.financialportfolio.backend.domain.service.UsuarioService;
-import com.financialportfolio.backend.infrastructure.repository.UsuarioRepository;
+import com.financialportfolio.backend.domain.repository.UserRepository;
+import com.financialportfolio.backend.domain.service.UserService;
+
+import io.vavr.control.Either;
 
 @Service
-public class UsuarioServiceImpl implements UsuarioService {
+public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UsuarioRepository userRepository;
+    private UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Optional<User> optUser = userRepository.findByEmail(username);
+        Either<UsernameNotFoundException, User> user = userRepository.findBy(username);
 
-        if (!optUser.isPresent()) {
-            throw new UsernameNotFoundException(username);
+        if (user.isLeft()) {
+            throw user.getLeft();
         }
 
-        return optUser.get();
+        return user.get();
     }
 
 }
