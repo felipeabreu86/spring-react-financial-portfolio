@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,6 +17,8 @@ import javax.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import com.financialportfolio.backend.domain.model.type.AuthorityType;
 
 @Entity
 @Table(name = "users")
@@ -40,7 +43,7 @@ public class User implements UserDetails {
     
     private Boolean enabled;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Collection<Authority> authorities = new ArrayList<>();
     
     // Construtores
@@ -56,7 +59,10 @@ public class User implements UserDetails {
         this.lastName = lastName;
         this.email = email;
         setPassword(password);
+        addAuthority(new Authority(AuthorityType.ROLE_USER));
     }
+    
+    // Métodos
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

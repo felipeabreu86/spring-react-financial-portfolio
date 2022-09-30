@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
@@ -13,49 +14,34 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.financialportfolio.backend.core.dto.internal.UserDataDto;
+import com.financialportfolio.backend.core.exception.TokenException;
 import com.financialportfolio.backend.core.util.JsonUtil;
+import com.financialportfolio.backend.core.util.MessageUtil;
 import com.financialportfolio.backend.domain.model.User;
 import com.financialportfolio.backend.domain.service.TokenService;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.vavr.control.Either;
 
 @Service
 public class TokenServiceImpl implements TokenService {
+
+    @Autowired
+    private MessageUtil messageUtil;
 
     /**
      * Tempo de vida útil do Token do tipo Bearer em milisegundos.
      */
     @Value("${api.jwt.expiration}")
-    private String expiration;
+    private Integer expiration;
 
     /**
      * Chave privada a ser utilizada para assinar digitalmente o JWT.
      */
     @Value("${api.jwt.secret}")
     private String secret;
-
-    @Override
-    public Optional<String> createToken(Authentication authentication) {
-        
-        User user = (User) authentication.getPrincipal();        
-        Date currentDate = new Date();
-        Date expirationDate = generateExpirationDate();
-        
-        String token = Jwts
-                .builder()
-                .setIssuer("Financial Portfolio API")
-                .setSubject(JsonUtil.toJson(new UserDataDto(user)).get())
-                .setIssuedAt(currentDate)
-                .setExpiration(expirationDate)
-                .signWith(SignatureAlgorithm.HS256, secret)
-                .compact();
-        
-        return StringUtils.hasText(token) 
-                ? Optional.of(token)
-                : Optional.empty();
-    }
-
+    
     @Override
     public boolean isTokenValid(String token) {
         
@@ -69,9 +55,30 @@ public class TokenServiceImpl implements TokenService {
         
         return isValid;
     }
+
+    @Override
+    public Either<TokenException, String> createToken(Authentication authentication) {
+        
+        User user = (User) authentication.getPrincipal();        
+        Date currentDate = new Date();
+        Date expirationDate = generateExpirationDate();
+        
+        String token = Jwts
+                .builder()
+                .setIssuer("Financial Portfolio API")
+                .setSubject(JsonUtil.toJson(new UserDataDto(user)).get())
+                .setIssuedAt(currentDate)
+                .setExpiration(expirationDate)
+                .signWith(SignatureAlgorithm.HS256, secret)
+                .compact();
+
+        return StringUtils.hasText(token) 
+                ? Either.right(token)
+                : Either.left(new TokenException(messageUtil.getMessageBy("error.creating.token")));
+    }
     
     @Override
-    public Optional<UserDataDto> getUserDataBy(String token) {
+    public Either<TokenException, UserDataDto> getUserDataBy(String token) {
 
         Optional<UserDataDto> userData = Optional.empty();
 
@@ -81,44 +88,52 @@ public class TokenServiceImpl implements TokenService {
             if (StringUtils.hasText(subject)) {
                 userData = JsonUtil.readValue(subject, UserDataDto.class);
             }
-        } catch (Exception e) { }
+        } catch (Exception e) {
+            
+        }
 
-        return userData;
+        return userData.isPresent() 
+                ? Either.right(userData.get())
+                : Either.left(new TokenException(messageUtil.getMessageBy("error.retrieving.token.userdata")));
     }
     
     @Override
-    public Optional<Date> getExpirationDateBy(HttpServletRequest request) {
+    public Either<TokenException, Date> getExpirationDateBy(HttpServletRequest request) {
 
-        Optional<String> token = getBearerTokenBy(request);
+        Either<TokenException, String> token = getBearerTokenBy(request);
 
-        return token.isPresent() 
+        return token.isRight() 
                 ? getExpirationDateBy(token.get()) 
-                : Optional.empty();
+                : Either.left(token.getLeft());
     }
     
     @Override
-    public Optional<Date> getExpirationDateBy(String token) {
+    public Either<TokenException, Date> getExpirationDateBy(String token) {
         
         Optional<Date> expirationDate = Optional.empty();
 
         try {
-            expirationDate = Optional
-                    .ofNullable(Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody().getExpiration());
-        } catch (Exception e) { }
+            expirationDate = Optional.ofNullable(
+                    Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody().getExpiration());
+        } catch (Exception e) {
 
-        return expirationDate;
+        }
+
+        return expirationDate.isPresent()
+                ? Either.right(expirationDate.get())
+                : Either.left(new TokenException("error.retrieving.token.expiration.date"));
     }
     
     @Override
-    public Optional<String> getBearerTokenBy(HttpServletRequest request) {
+    public Either<TokenException, String> getBearerTokenBy(HttpServletRequest request) {
         
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        boolean tokenIsValid = !(token == null || token.isEmpty() || token.length() < 8 || !token.startsWith("Bearer "));
+        boolean tokenIsValid = StringUtils.hasText(token) && token.length() > 7 && token.startsWith("Bearer ");
 
         return tokenIsValid 
-                ? Optional.of(token.substring(7, token.length()))
-                : Optional.empty();
+                ? Either.right(token.substring(7, token.length()))
+                : Either.left(new TokenException(messageUtil.getMessageBy("error.retrieving.token")));
     }
 
     /**
@@ -130,7 +145,7 @@ public class TokenServiceImpl implements TokenService {
     private Date generateExpirationDate() {
 
         Calendar c = Calendar.getInstance();
-        c.add(Calendar.MILLISECOND, Integer.parseInt(expiration));
+        c.add(Calendar.MILLISECOND, expiration);
 
         return c.getTime();
     }

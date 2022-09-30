@@ -1,7 +1,6 @@
 package com.financialportfolio.backend.core.filter;
 
 import java.io.IOException;
-import java.util.Optional;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -13,7 +12,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.financialportfolio.backend.core.dto.internal.UserDataDto;
+import com.financialportfolio.backend.core.exception.TokenException;
 import com.financialportfolio.backend.domain.service.TokenService;
+
+import io.vavr.control.Either;
 
 public class BearerTokenFilter extends OncePerRequestFilter {
 
@@ -32,9 +34,9 @@ public class BearerTokenFilter extends OncePerRequestFilter {
             HttpServletResponse response, 
             FilterChain filterChain) throws ServletException, IOException {
 
-        Optional<String> token = tokenService.getBearerTokenBy(request);
+        Either<TokenException, String> token = tokenService.getBearerTokenBy(request);
 
-        if (token.isPresent() && tokenService.isTokenValid(token.get())) {
+        if (token.isRight() && tokenService.isTokenValid(token.get())) {
             authenticateUser(token.get());
         }
 
@@ -49,11 +51,11 @@ public class BearerTokenFilter extends OncePerRequestFilter {
      */
     private void authenticateUser(String token) {
 
-        Optional<UserDataDto> userData = tokenService.getUserDataBy(token);
-        
-        if (userData.isPresent()) {
+        Either<TokenException, UserDataDto> userData = tokenService.getUserDataBy(token);
+
+        if (userData.isRight()) {
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                    userData.get().getUserId(),
+                    userData.get().getUserId(), 
                     null, 
                     userData.get().getAuthorities());
 

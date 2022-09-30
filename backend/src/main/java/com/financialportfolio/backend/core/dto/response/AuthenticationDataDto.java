@@ -1,7 +1,7 @@
 package com.financialportfolio.backend.core.dto.response;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -11,20 +11,16 @@ public class AuthenticationDataDto {
     private String userId;
 
     @JsonProperty("expiration_date")
-    private Date expirationDate;
+    private String expirationDate;
 
     public AuthenticationDataDto() {
         super();
     }
 
-    public AuthenticationDataDto(String authenticatedUserId, Optional<Date> tokenExpirationDate) {
+    public AuthenticationDataDto(String authenticatedUserId, Date tokenExpirationDate) {
         this();
-
         setUserId(authenticatedUserId);
-
-        if (tokenExpirationDate.isPresent()) {
-            setExpirationDate(tokenExpirationDate.get());
-        }
+        setExpirationDate(tokenExpirationDate);
     }
 
     public String getUserId() {
@@ -35,12 +31,12 @@ public class AuthenticationDataDto {
         this.userId = userId;
     }
 
-    public Date getExpirationDate() {
-        return expirationDate;
+    public String getExpirationDate() {
+        return this.expirationDate;
     }
 
     public void setExpirationDate(Date expirationDate) {
-        this.expirationDate = expirationDate;
+        this.expirationDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(expirationDate);
     }
 
 }
