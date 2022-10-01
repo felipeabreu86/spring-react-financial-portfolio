@@ -30,7 +30,14 @@ public class LoginFormDto {
         this.password = password;
     }
 
-    public UsernamePasswordAuthenticationToken toAuthenticationObject() {
+    /**
+     * A partir dos dados da classe LoginFormDto, cria uma instância da classe
+     * UsernamePasswordAuthenticationToken que implementa a interface
+     * Authentication.
+     * 
+     * @return Instância contendo os dados de autenticação do usuário.
+     */
+    public UsernamePasswordAuthenticationToken toAuthentication() {
         return new UsernamePasswordAuthenticationToken(this.email, this.password);
     }
 

@@ -6,9 +6,26 @@ import org.springframework.http.ResponseEntity;
 
 import com.financialportfolio.backend.external.dto.response.ApiErrorDto;
 
-public interface BaseController {
+public interface ApiResponse {
 
-    default ResponseEntity<ApiErrorDto> buildApiErrorResponse(HttpStatus status, Exception e) {
+    /**
+     * 
+     * @param status
+     * @param obj
+     * @return
+     */
+    default ResponseEntity<?> ApiSuccessResponse(HttpStatus status, Object obj) {
+
+        return new ResponseEntity<>(obj, status);
+    }
+
+    /**
+     * 
+     * @param status
+     * @param e
+     * @return
+     */
+    default ResponseEntity<?> ApiErrorResponse(HttpStatus status, Exception e) {
 
         final ApiErrorDto apiError = new ApiErrorDto(status, e);
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());

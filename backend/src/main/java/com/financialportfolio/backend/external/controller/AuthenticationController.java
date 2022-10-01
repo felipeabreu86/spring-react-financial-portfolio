@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.financialportfolio.backend.domain.service.TokenService;
-import com.financialportfolio.backend.external.BaseController;
+import com.financialportfolio.backend.external.ApiResponse;
 import com.financialportfolio.backend.external.dto.request.LoginFormDto;
 import com.financialportfolio.backend.external.dto.response.AuthenticationDataDto;
 import com.financialportfolio.backend.external.dto.response.TokenDto;
 
 @RestController
 @RequestMapping("/auth")
-public class AuthenticationController implements BaseController {
+public class AuthenticationController implements ApiResponse {
 
     @Autowired  
     private AuthenticationManager authManager;
@@ -45,11 +45,11 @@ public class AuthenticationController implements BaseController {
     public ResponseEntity<?> createToken(@RequestBody @Valid LoginFormDto loginFormDto) {
 
         return tokenService
-                .createToken(authManager.authenticate(loginFormDto.toAuthenticationObject()))
+                .createToken(authManager.authenticate(loginFormDto.toAuthentication()))
                 .fold(exception -> {
-                    return buildApiErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, exception);
+                    return ApiErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, exception);
                 }, token -> {
-                    return ResponseEntity.ok(new TokenDto(token, "Bearer"));
+                    return ApiSuccessResponse(HttpStatus.OK, new TokenDto(token, "Bearer"));
                 });
     }
 
@@ -69,9 +69,9 @@ public class AuthenticationController implements BaseController {
         return tokenService
                 .getExpirationDateBy(request)
                 .fold(exception -> {
-                    return buildApiErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, exception);
+                    return ApiErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, exception);
                 }, date -> {
-                    return ResponseEntity.ok(new AuthenticationDataDto(principal.getName(), date));
+                    return ApiSuccessResponse(HttpStatus.OK, new AuthenticationDataDto(principal.getName(), date));
                 });
     }
 
