@@ -1,4 +1,4 @@
-package com.financialportfolio.backend.core.configuration;
+package com.financialportfolio.backend.application.configuration;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;

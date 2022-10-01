@@ -1,4 +1,4 @@
-package com.financialportfolio.backend.core.dto.response;
+package com.financialportfolio.backend.external.dto.response;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;

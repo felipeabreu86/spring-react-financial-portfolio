@@ -1,4 +1,4 @@
-package com.financialportfolio.backend.core.dto.response;
+package com.financialportfolio.backend.external.dto.response;
 
 public class TokenDto {
 

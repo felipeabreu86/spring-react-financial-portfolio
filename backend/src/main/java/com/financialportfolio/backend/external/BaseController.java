@@ -1,10 +1,10 @@
-package com.financialportfolio.backend.controller;
+package com.financialportfolio.backend.external;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.financialportfolio.backend.core.dto.response.ApiErrorDto;
+import com.financialportfolio.backend.external.dto.response.ApiErrorDto;
 
 public interface BaseController {
 

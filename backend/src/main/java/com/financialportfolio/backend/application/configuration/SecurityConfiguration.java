@@ -1,4 +1,4 @@
-package com.financialportfolio.backend.core.configuration;
+package com.financialportfolio.backend.application.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.financialportfolio.backend.core.filter.BearerTokenFilter;
+import com.financialportfolio.backend.application.filter.BearerTokenFilter;
 import com.financialportfolio.backend.domain.service.TokenService;
 
 @Configuration

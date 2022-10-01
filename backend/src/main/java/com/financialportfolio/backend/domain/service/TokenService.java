@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.security.core.Authentication;
 
-import com.financialportfolio.backend.core.dto.internal.UserDataDto;
 import com.financialportfolio.backend.core.exception.TokenException;
+import com.financialportfolio.backend.domain.service.dto.UserDataDto;
 
 import io.vavr.control.Either;
 

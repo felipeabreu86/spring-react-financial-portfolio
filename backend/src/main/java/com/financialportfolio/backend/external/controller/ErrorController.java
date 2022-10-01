@@ -1,4 +1,4 @@
-package com.financialportfolio.backend.controller;
+package com.financialportfolio.backend.external.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.financialportfolio.backend.core.dto.response.ApiErrorDto;
+import com.financialportfolio.backend.external.dto.response.ApiErrorDto;
 
 @RestControllerAdvice
 public class ErrorController extends ResponseEntityExceptionHandler {

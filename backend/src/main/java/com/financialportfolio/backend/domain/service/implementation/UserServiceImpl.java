@@ -1,4 +1,4 @@
-package com.financialportfolio.backend.domain.service.impl;
+package com.financialportfolio.backend.domain.service.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

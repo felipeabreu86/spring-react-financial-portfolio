@@ -1,4 +1,4 @@
-package com.financialportfolio.backend.core.filter;
+package com.financialportfolio.backend.application.filter;
 
 import java.io.IOException;
 
@@ -11,9 +11,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.financialportfolio.backend.core.dto.internal.UserDataDto;
 import com.financialportfolio.backend.core.exception.TokenException;
 import com.financialportfolio.backend.domain.service.TokenService;
+import com.financialportfolio.backend.domain.service.dto.UserDataDto;
 
 import io.vavr.control.Either;
 

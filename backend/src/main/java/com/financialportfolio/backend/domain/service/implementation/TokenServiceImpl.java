@@ -1,4 +1,4 @@
-package com.financialportfolio.backend.domain.service.impl;
+package com.financialportfolio.backend.domain.service.implementation;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -13,12 +13,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.financialportfolio.backend.core.dto.internal.UserDataDto;
 import com.financialportfolio.backend.core.exception.TokenException;
 import com.financialportfolio.backend.core.util.JsonUtil;
 import com.financialportfolio.backend.core.util.MessageUtil;
 import com.financialportfolio.backend.domain.model.User;
 import com.financialportfolio.backend.domain.service.TokenService;
+import com.financialportfolio.backend.domain.service.dto.UserDataDto;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

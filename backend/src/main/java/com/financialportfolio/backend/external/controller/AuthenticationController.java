@@ -1,4 +1,4 @@
-package com.financialportfolio.backend.controller;
+package com.financialportfolio.backend.external.controller;
 
 import java.security.Principal;
 
@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.financialportfolio.backend.core.dto.request.LoginFormDto;
-import com.financialportfolio.backend.core.dto.response.AuthenticationDataDto;
-import com.financialportfolio.backend.core.dto.response.TokenDto;
 import com.financialportfolio.backend.domain.service.TokenService;
+import com.financialportfolio.backend.external.BaseController;
+import com.financialportfolio.backend.external.dto.request.LoginFormDto;
+import com.financialportfolio.backend.external.dto.response.AuthenticationDataDto;
+import com.financialportfolio.backend.external.dto.response.TokenDto;
 
 @RestController
 @RequestMapping("/auth")

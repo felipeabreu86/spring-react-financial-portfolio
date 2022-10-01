@@ -1,4 +1,4 @@
-package com.financialportfolio.backend.core.dto.internal;
+package com.financialportfolio.backend.domain.service.dto;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,4 +1,4 @@
-package com.financialportfolio.backend.core.dto.request;
+package com.financialportfolio.backend.external.dto.request;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
