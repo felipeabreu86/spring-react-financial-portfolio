@@ -61,7 +61,7 @@ public class TokenServiceImpl implements TokenService {
         
         User user = (User) authentication.getPrincipal();        
         Date currentDate = new Date();
-        Date expirationDate = generateExpirationDate();
+        Date expirationDate = this.generateExpirationDate();
         
         String token = Jwts
                 .builder()
@@ -100,10 +100,10 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public Either<TokenException, Date> getExpirationDateBy(HttpServletRequest request) {
 
-        Either<TokenException, String> token = getBearerTokenBy(request);
+        Either<TokenException, String> token = this.getBearerTokenBy(request);
 
         return token.isRight() 
-                ? getExpirationDateBy(token.get()) 
+                ? this.getExpirationDateBy(token.get()) 
                 : Either.left(token.getLeft());
     }
     

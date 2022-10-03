@@ -47,6 +47,7 @@ public class ErrorController extends ResponseEntityExceptionHandler {
             errors.add(error.getObjectName() + ": " + error.getDefaultMessage());
         }
         final ApiErrorDto apiError = new ApiErrorDto(HttpStatus.BAD_REQUEST, errors);
+
         return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
     }
 
@@ -63,6 +64,7 @@ public class ErrorController extends ResponseEntityExceptionHandler {
             errors.add(error.getObjectName() + ": " + error.getDefaultMessage());
         }
         final ApiErrorDto apiError = new ApiErrorDto(HttpStatus.BAD_REQUEST, errors);
+
         return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
     }
 
@@ -75,7 +77,8 @@ public class ErrorController extends ResponseEntityExceptionHandler {
                 + ex.getRequiredType();
 
         final ApiErrorDto apiError = new ApiErrorDto(HttpStatus.BAD_REQUEST, error);
-        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+
+        return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
     }
 
     @Override
@@ -85,7 +88,8 @@ public class ErrorController extends ResponseEntityExceptionHandler {
 
         final String error = ex.getRequestPartName() + " part is missing";
         final ApiErrorDto apiError = new ApiErrorDto(HttpStatus.BAD_REQUEST, error);
-        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+
+        return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
     }
 
     @Override
@@ -96,22 +100,24 @@ public class ErrorController extends ResponseEntityExceptionHandler {
 
         final String error = ex.getParameterName() + " parameter is missing";
         final ApiErrorDto apiError = new ApiErrorDto(HttpStatus.BAD_REQUEST, error);
-        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+
+        return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
     }
 
     @ExceptionHandler({ MethodArgumentTypeMismatchException.class })
-    public ResponseEntity<Object> handleMethodArgumentTypeMismatch(final MethodArgumentTypeMismatchException ex,
+    public ResponseEntity<?> handleMethodArgumentTypeMismatch(final MethodArgumentTypeMismatchException ex,
             final WebRequest request) {
         logger.info(ex.getClass().getName());
 
         final String error = ex.getName() + " should be of type " + ex.getRequiredType().getName();
 
         final ApiErrorDto apiError = new ApiErrorDto(HttpStatus.BAD_REQUEST, error);
-        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+
+        return handleExceptionInternal(ex, apiError, new HttpHeaders(), apiError.getStatus(), request);
     }
 
     @ExceptionHandler({ ConstraintViolationException.class })
-    public ResponseEntity<Object> handleConstraintViolation(final ConstraintViolationException ex,
+    public ResponseEntity<?> handleConstraintViolation(final ConstraintViolationException ex,
             final WebRequest request) {
         logger.info(ex.getClass().getName());
 
@@ -122,16 +128,18 @@ public class ErrorController extends ResponseEntityExceptionHandler {
         }
 
         final ApiErrorDto apiError = new ApiErrorDto(HttpStatus.BAD_REQUEST, errors);
-        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+
+        return handleExceptionInternal(ex, apiError, new HttpHeaders(), apiError.getStatus(), request);
     }
 
     // HTTP ERROR 401 - UNAUTHORIZED
 
     @ExceptionHandler({ Unauthorized.class, BadCredentialsException.class })
-    public ResponseEntity<ApiErrorDto> handleUnauthorized(final Exception ex, final WebRequest request) {
+    public ResponseEntity<?> handleUnauthorized(final Exception ex, final WebRequest request) {
 
         final ApiErrorDto apiError = new ApiErrorDto(HttpStatus.UNAUTHORIZED, ex.getMessage());
-        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
+
+        return handleExceptionInternal(ex, apiError, new HttpHeaders(), apiError.getStatus(), request);
     }
 
     // HTTP ERROR 404 - NOT FOUND
@@ -144,7 +152,8 @@ public class ErrorController extends ResponseEntityExceptionHandler {
         final String error = "No handler found for " + ex.getHttpMethod() + " " + ex.getRequestURL();
 
         final ApiErrorDto apiError = new ApiErrorDto(HttpStatus.NOT_FOUND, error);
-        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+
+        return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
     }
 
     // HTTP ERROR 405 - METHOD NOT ALLOWED
@@ -161,7 +170,8 @@ public class ErrorController extends ResponseEntityExceptionHandler {
         ex.getSupportedHttpMethods().forEach(t -> builder.append(t + " "));
 
         final ApiErrorDto apiError = new ApiErrorDto(HttpStatus.METHOD_NOT_ALLOWED, builder.toString());
-        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+
+        return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
     }
 
     // HTTP ERROR 415 - UNSUPPORTED MEDIA TYPE
@@ -178,18 +188,20 @@ public class ErrorController extends ResponseEntityExceptionHandler {
 
         final ApiErrorDto apiError = new ApiErrorDto(HttpStatus.UNSUPPORTED_MEDIA_TYPE,
                 builder.substring(0, builder.length() - 2));
-        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+
+        return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
     }
 
     // HTTP ERROR 500 - INTERNAL SERVER ERROR
 
     @ExceptionHandler({ Exception.class })
-    public ResponseEntity<Object> handleAll(final Exception ex, final WebRequest request) {
+    public ResponseEntity<?> handleAll(final Exception ex, final WebRequest request) {
         logger.info(ex.getClass().getName());
         logger.error("error", ex);
 
-        final ApiErrorDto apiError = new ApiErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "error occurred");
-        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+        final ApiErrorDto apiError = new ApiErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error");
+
+        return handleExceptionInternal(ex, apiError, new HttpHeaders(), apiError.getStatus(), request);
     }
 
 }

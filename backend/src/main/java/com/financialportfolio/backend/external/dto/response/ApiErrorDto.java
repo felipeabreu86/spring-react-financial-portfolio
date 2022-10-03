@@ -32,10 +32,6 @@ public class ApiErrorDto {
         errors = Arrays.asList(error);
     }
 
-    public ApiErrorDto(HttpStatus status, Exception e) {
-        this(status, e.getLocalizedMessage());
-    }
-
     public HttpStatus getStatus() {
         return status;
     }
