@@ -27,6 +27,7 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.financialportfolio.backend.core.util.CastUtil;
 import com.financialportfolio.backend.external.dto.response.ApiErrorDto;
 
 @RestControllerAdvice
@@ -41,7 +42,7 @@ public class ErrorController extends ResponseEntityExceptionHandler {
 
         final List<String> errors = new ArrayList<String>();
         for (final FieldError error : ex.getBindingResult().getFieldErrors()) {
-            errors.add(error.getField() + ": " + error.getDefaultMessage());
+            errors.add(CastUtil.castCamelToSnake(error.getField()) + ": " + error.getDefaultMessage());
         }
         for (final ObjectError error : ex.getBindingResult().getGlobalErrors()) {
             errors.add(error.getObjectName() + ": " + error.getDefaultMessage());
@@ -58,7 +59,7 @@ public class ErrorController extends ResponseEntityExceptionHandler {
 
         final List<String> errors = new ArrayList<String>();
         for (final FieldError error : ex.getBindingResult().getFieldErrors()) {
-            errors.add(error.getField() + ": " + error.getDefaultMessage());
+            errors.add(CastUtil.castCamelToSnake(error.getField()) + ": " + error.getDefaultMessage());
         }
         for (final ObjectError error : ex.getBindingResult().getGlobalErrors()) {
             errors.add(error.getObjectName() + ": " + error.getDefaultMessage());

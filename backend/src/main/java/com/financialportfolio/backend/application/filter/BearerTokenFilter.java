@@ -37,7 +37,7 @@ public class BearerTokenFilter extends OncePerRequestFilter {
         Either<TokenException, String> token = tokenService.getBearerTokenBy(request);
 
         if (token.isRight() && tokenService.isTokenValid(token.get())) {
-            authenticateUser(token.get());
+            this.authenticateUser(token.get());
         }
 
         filterChain.doFilter(request, response);

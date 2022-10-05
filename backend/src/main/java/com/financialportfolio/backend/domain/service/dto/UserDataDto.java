@@ -3,7 +3,7 @@ package com.financialportfolio.backend.domain.service.dto;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.financialportfolio.backend.core.util.CastUtils;
+import com.financialportfolio.backend.core.util.CastUtil;
 import com.financialportfolio.backend.domain.model.Authority;
 import com.financialportfolio.backend.domain.model.User;
 
@@ -19,7 +19,7 @@ public class UserDataDto {
 
     public UserDataDto(User user) {
         this.userId = user.getId();
-        this.authorities = CastUtils.castList(Authority.class, user.getAuthorities());
+        this.authorities = CastUtil.castList(Authority.class, user.getAuthorities());
     }
 
     public Long getUserId() {

@@ -14,7 +14,7 @@ public interface ApiResponse {
      * @param obj
      * @return
      */
-    default ResponseEntity<Object> ApiSuccessResponse(HttpStatus status, Object obj) {
+    default ResponseEntity<?> ApiSuccessResponse(HttpStatus status, Object obj) {
 
         return new ResponseEntity<>(obj, status);
     }
@@ -25,7 +25,7 @@ public interface ApiResponse {
      * @param e
      * @return
      */
-    default ResponseEntity<Object> ApiErrorResponse(HttpStatus status, Exception e) {
+    default ResponseEntity<?> ApiErrorResponse(HttpStatus status, Exception e) {
 
         return this.ApiErrorResponse(status, e.getLocalizedMessage());
     }
@@ -36,7 +36,7 @@ public interface ApiResponse {
      * @param error
      * @return
      */
-    default ResponseEntity<Object> ApiErrorResponse(HttpStatus status, String error) {
+    default ResponseEntity<?> ApiErrorResponse(HttpStatus status, String error) {
 
         final ApiErrorDto apiError = new ApiErrorDto(status, error);
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());

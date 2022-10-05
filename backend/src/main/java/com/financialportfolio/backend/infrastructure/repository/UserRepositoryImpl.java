@@ -48,4 +48,14 @@ public class UserRepositoryImpl implements UserRepository {
                 : Either.left(new UsernameNotFoundException(messageUtil.getMessageBy("error.user.not.found")));
     }
 
+    @Override
+    public Either<Exception, User> saveOrUpdate(User user) {
+        
+        try {
+            return Either.right(userDao.save(user));
+        } catch (Exception e) {
+            return Either.left(e);
+        }
+    }
+
 }

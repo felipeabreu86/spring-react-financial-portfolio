@@ -45,7 +45,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
@@ -99,6 +99,15 @@
 			<version>0.10.4</version>
 		</dependency>
 		<!-- /Vavr is an object-functional library for Java 8+ -->
+
+		<!-- Apache Commons Validator provides the building blocks for both client side validation and server side data validation -->
+		<dependency>
+			<groupId>commons-validator</groupId>
+			<artifactId>commons-validator</artifactId>
+			<version>1.7</version>
+			<optional>true</optional>
+		</dependency>
+		<!-- /Apache Commons Validator provides the building blocks for both client side validation and server side data validation -->
 
 		<!-- Tests -->
 		<dependency>

@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class CastUtilsTest {
+class CastUtilTest {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static List getRawListWithMixedTypes() {
@@ -32,7 +32,7 @@ class CastUtilsTest {
     public void givenRawList_whenAssignToTypedListAfterCallingCastList_shouldOnlyHaveElementsWithExpectedType() {
         @SuppressWarnings("rawtypes")
         List rawList = getRawListWithMixedTypes();
-        List<String> strList = CastUtils.castList(String.class, rawList);
+        List<String> strList = CastUtil.castList(String.class, rawList);
         Assertions.assertEquals(4, rawList.size());
         Assertions.assertEquals(3, strList.size());
         Assertions.assertTrue(strList.stream().allMatch(el -> el.endsWith("String.")));
@@ -42,7 +42,7 @@ class CastUtilsTest {
     public void givenRawList_whenAssignToTypedListAfterCallingCastList_shouldOnlyHaveElementsWithStringType() {
         @SuppressWarnings("rawtypes")
         List rawList = getRawListWithStringType();
-        List<String> strList = CastUtils.castList(String.class, rawList);
+        List<String> strList = CastUtil.castList(String.class, rawList);
         Assertions.assertEquals(3, rawList.size());
         Assertions.assertEquals(3, strList.size());
         Assertions.assertTrue(strList.stream().allMatch(el -> el.endsWith("String.")));

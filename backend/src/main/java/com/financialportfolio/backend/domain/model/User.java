@@ -30,36 +30,42 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
-    
-    @Column(name = "last_name")
+
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "email", unique = true, length = 256)
+    @Column(name = "username_email", unique = true, length = 256, nullable = false)
     private String email;
 
+    @Column(name = "password", nullable = false)
     private String password;
-    
+
+    @Column(name = "enabled", nullable = false)
     private Boolean enabled;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Collection<Authority> authorities = new ArrayList<>();
-    
+
     // Construtores
 
     public User() {
         super();
     }
 
-    public User(String firstName, String lastName, String email, String password) {
+    public User(Boolean enabled, String firstName, String lastName, String email, String password) {
         this();
-        this.enabled = true;
+        this.enabled = enabled;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         setPassword(password);
         addAuthority(new Authority(AuthorityType.ROLE_USER));
+    }
+
+    public User(String firstName, String lastName, String email, String password) {
+        this(true, firstName, lastName, email, password);
     }
     
     // Métodos
@@ -98,6 +104,34 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return this.enabled;
     }
+    
+    public void setPassword(String password) {
+        this.password = new BCryptPasswordEncoder().encode(Objects.requireNonNull(password));
+    }
+
+    public void addAuthority(Authority authority) {
+        if (!authorities.contains(authority)) {
+            authorities.add(authority);
+        }
+    }
+
+    public void removeAuthority(Authority authority) {
+        if (authorities.size() > 1 && authorities.contains(authority)) {
+            authorities.remove(authority);
+        }
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }    
 
     @Override
     public int hashCode() {
@@ -131,34 +165,6 @@ public class User implements UserDetails {
             .append("Usuário [e-mail=").append(email).append("]")
             .append("[enabled=").append(isEnabled() ? "yes" : "no").append("]");
         return builder.toString();
-    }
-    
-    public void setPassword(String password) {
-        this.password = new BCryptPasswordEncoder().encode(Objects.requireNonNull(password));
-    }
-
-    public void addAuthority(Authority authority) {
-        if (!authorities.contains(authority)) {
-            authorities.add(authority);
-        }
-    }
-
-    public void removeAuthority(Authority authority) {
-        if (authorities.size() > 1 && authorities.contains(authority)) {
-            authorities.remove(authority);
-        }
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
     }
 
 }

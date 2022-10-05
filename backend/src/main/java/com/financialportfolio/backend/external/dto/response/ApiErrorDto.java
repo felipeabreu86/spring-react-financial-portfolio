@@ -27,9 +27,7 @@ public class ApiErrorDto {
     }
 
     public ApiErrorDto(HttpStatus status, String error) {
-        super();
-        this.status = status;
-        errors = Arrays.asList(error);
+        this(status, Arrays.asList(error));
     }
 
     public HttpStatus getStatus() {

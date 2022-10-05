@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public final class CastUtils {
+public final class CastUtil {
 
-    private CastUtils() {
+    private CastUtil() {
         super();
     }
 
@@ -20,9 +20,9 @@ public final class CastUtils {
      * @return lista do tipo T.
      */
     public static <T> List<T> castList(Class<? extends T> clazz, Collection<?> rawCollection) {
-        
+
         List<T> result = new ArrayList<>(rawCollection.size());
-        
+
         for (Object o : rawCollection) {
             try {
                 result.add(clazz.cast(o));
@@ -30,8 +30,20 @@ public final class CastUtils {
                 System.out.println(e.getMessage());
             }
         }
-        
+
         return result;
+    }
+
+    /**
+     * 
+     * @param str
+     * @return
+     */
+    public static String castCamelToSnake(String str) {
+
+        String regex = "([a-z])([A-Z]+)";
+        String replacement = "$1_$2";
+        return str.replaceAll(regex, replacement).toLowerCase();
     }
 
 }

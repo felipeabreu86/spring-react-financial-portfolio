@@ -40,6 +40,7 @@ public class SecurityConfiguration {
                 .authorizeRequests()
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
+                .antMatchers(HttpMethod.POST, "/user/register").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
