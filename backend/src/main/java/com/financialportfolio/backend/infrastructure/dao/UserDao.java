@@ -14,7 +14,7 @@ public interface UserDao extends JpaRepository<User, Long> {
      * Realiza a busca por usuário no banco de dados filtrando pelo email.
      * 
      * @param email - email do usuário.
-     * @return Usuário encontrado no banco de dados ou vazio (Optional.empty()).
+     * @return Usuário encontrado no banco de dados.
      */
     Optional<User> findByEmail(String email);
 

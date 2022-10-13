@@ -6,6 +6,7 @@ public class PasswordLengthValidation implements PasswordValidation {
     public Boolean isValid(String password) {
 
         int tamanho = password.length();
+
         return (tamanho < 8 || tamanho > 16) 
                 ? false 
                 : true;

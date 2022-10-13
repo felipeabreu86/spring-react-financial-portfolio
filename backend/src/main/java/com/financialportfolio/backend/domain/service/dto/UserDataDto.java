@@ -13,6 +13,8 @@ public class UserDataDto {
 
     private Collection<Authority> authorities = new ArrayList<>();
 
+    // Construtores
+
     public UserDataDto() {
         super();
     }
@@ -21,6 +23,8 @@ public class UserDataDto {
         this.userId = user.getId();
         this.authorities = CastUtil.castList(Authority.class, user.getAuthorities());
     }
+
+    // Getters e Setters
 
     public Long getUserId() {
         return this.userId;

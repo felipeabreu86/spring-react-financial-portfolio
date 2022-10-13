@@ -2,7 +2,9 @@ package com.financialportfolio.backend.domain.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,6 +14,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -48,6 +52,10 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Collection<Authority> authorities = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @PrimaryKeyJoinColumn
+    private Set<PasswordRecoveryToken> passwordRecoveryToken = new HashSet<PasswordRecoveryToken>();
+
     // Construtores
 
     public User() {
@@ -67,8 +75,8 @@ public class User implements UserDetails {
     public User(String firstName, String lastName, String email, String password) {
         this(true, firstName, lastName, email, password);
     }
-    
-    // Métodos
+
+    // Getters e Setters
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -104,10 +112,24 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return this.enabled;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
     
     public void setPassword(String password) {
         this.password = new BCryptPasswordEncoder().encode(Objects.requireNonNull(password));
     }
+
+    // Métodos
 
     public void addAuthority(Authority authority) {
         if (!authorities.contains(authority)) {
@@ -120,18 +142,12 @@ public class User implements UserDetails {
             authorities.remove(authority);
         }
     }
-
-    public Long getId() {
-        return id;
+    
+    public Boolean addPasswordRecoveryToken(PasswordRecoveryToken token) {
+        return token != null 
+                ? passwordRecoveryToken.add(token) 
+                : false;
     }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }    
 
     @Override
     public int hashCode() {

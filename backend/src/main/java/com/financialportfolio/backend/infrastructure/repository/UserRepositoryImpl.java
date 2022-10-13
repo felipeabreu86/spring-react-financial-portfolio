@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import com.financialportfolio.backend.core.exception.UserNotFoundException;
-import com.financialportfolio.backend.core.util.MessageUtil;
 import com.financialportfolio.backend.domain.model.User;
 import com.financialportfolio.backend.domain.repository.UserRepository;
 import com.financialportfolio.backend.infrastructure.dao.UserDao;
@@ -21,9 +20,6 @@ public class UserRepositoryImpl implements UserRepository {
     @Autowired
     private UserDao userDao;
 
-    @Autowired
-    private MessageUtil messageUtil;
-
     @Override
     public Either<UserNotFoundException, User> findBy(Long id) {
 
@@ -33,7 +29,7 @@ public class UserRepositoryImpl implements UserRepository {
         
         return user.isPresent()
                 ? Either.right(user.get())
-                : Either.left(new UserNotFoundException(messageUtil.getMessageBy("error.user.not.found")));
+                : Either.left(new UserNotFoundException("Usuário não encontrado."));
     }
     
     @Override
@@ -45,7 +41,7 @@ public class UserRepositoryImpl implements UserRepository {
         
         return user.isPresent()
                 ? Either.right(user.get())
-                : Either.left(new UsernameNotFoundException(messageUtil.getMessageBy("error.user.not.found")));
+                : Either.left(new UsernameNotFoundException("Usuário não encontrado."));
     }
 
     @Override

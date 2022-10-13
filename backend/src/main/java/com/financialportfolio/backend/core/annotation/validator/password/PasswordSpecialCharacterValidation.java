@@ -16,6 +16,12 @@ public class PasswordSpecialCharacterValidation implements PasswordValidation {
         return "{password.special.character}";
     }
 
+    /**
+     * Verifica se o texto contém ao menos um caracter especial.
+     * 
+     * @param value - texto
+     * @return true ou false
+     */
     private boolean containsSpecialChar(String value) {
 
         return StringUtils.hasText(value) 

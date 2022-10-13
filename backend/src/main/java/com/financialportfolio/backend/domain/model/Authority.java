@@ -24,10 +24,12 @@ public class Authority implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @Column(name = "authority", length = 50)
     @Enumerated(EnumType.STRING)
     private AuthorityType authority;
+
+    // Construtores
 
     public Authority() {
         super();
@@ -38,6 +40,8 @@ public class Authority implements GrantedAuthority {
         this.authority = authority;
     }
 
+    // Getters e Setters
+
     public Long getId() {
         return id;
     }
@@ -46,6 +50,8 @@ public class Authority implements GrantedAuthority {
     public String getAuthority() {
         return this.authority.toString();
     }
+
+    // Métodos
 
     @Override
     public int hashCode() {
@@ -69,7 +75,7 @@ public class Authority implements GrantedAuthority {
         final StringBuilder builder = new StringBuilder();
         builder
             .append("Authority [id=").append(id).append("]")
-            .append("[authority=").append(authority.toString()).append("]");
+            .append("[text=").append(authority.toString()).append("]");
         return builder.toString();
     }
 

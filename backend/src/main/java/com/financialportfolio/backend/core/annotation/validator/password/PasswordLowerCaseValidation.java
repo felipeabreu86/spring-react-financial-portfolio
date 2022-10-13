@@ -14,6 +14,12 @@ public class PasswordLowerCaseValidation implements PasswordValidation {
         return "{password.lower.case}";
     }
 
+    /**
+     * Verifica se o texto contém ao menos uma letra minúscula.
+     * 
+     * @param value - texto
+     * @return true ou false
+     */
     private boolean containsLowerCase(String value) {
         
         return StringUtils.hasText(value) 

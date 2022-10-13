@@ -14,6 +14,12 @@ public class PasswordUpperCaseValidation implements PasswordValidation {
         return "{password.upper.case}";
     }
 
+    /**
+     * Verifica se o texto contém ao menos uma letra maiúscula.
+     * 
+     * @param value - texto
+     * @return true ou false
+     */
     private boolean containsUpperCase(String password) {
         
         return StringUtils.hasText(password) 

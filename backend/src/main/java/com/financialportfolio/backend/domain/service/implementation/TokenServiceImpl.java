@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
@@ -15,7 +14,6 @@ import org.springframework.util.StringUtils;
 
 import com.financialportfolio.backend.core.exception.TokenException;
 import com.financialportfolio.backend.core.util.JsonUtil;
-import com.financialportfolio.backend.core.util.MessageUtil;
 import com.financialportfolio.backend.domain.model.User;
 import com.financialportfolio.backend.domain.service.TokenService;
 import com.financialportfolio.backend.domain.service.dto.UserDataDto;
@@ -26,9 +24,6 @@ import io.vavr.control.Either;
 
 @Service
 public class TokenServiceImpl implements TokenService {
-
-    @Autowired
-    private MessageUtil messageUtil;
 
     /**
      * Tempo de vida útil do Token do tipo Bearer em milisegundos.
@@ -71,10 +66,10 @@ public class TokenServiceImpl implements TokenService {
                 .setExpiration(expirationDate)
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
-
+        
         return StringUtils.hasText(token) 
                 ? Either.right(token)
-                : Either.left(new TokenException(messageUtil.getMessageBy("error.creating.token")));
+                : Either.left(new TokenException("Erro ao gerar o Token."));
     }
     
     @Override
@@ -94,7 +89,7 @@ public class TokenServiceImpl implements TokenService {
 
         return userData.isPresent() 
                 ? Either.right(userData.get())
-                : Either.left(new TokenException(messageUtil.getMessageBy("error.retrieving.token.userdata")));
+                : Either.left(new TokenException("Erro ao obter os dados do usuário."));
     }
     
     @Override
@@ -121,7 +116,7 @@ public class TokenServiceImpl implements TokenService {
 
         return expirationDate.isPresent()
                 ? Either.right(expirationDate.get())
-                : Either.left(new TokenException("error.retrieving.token.expiration.date"));
+                : Either.left(new TokenException("Erro ao obter a data de expiração do Token."));
     }
     
     @Override
@@ -133,7 +128,7 @@ public class TokenServiceImpl implements TokenService {
 
         return tokenIsValid 
                 ? Either.right(token.substring(7, token.length()))
-                : Either.left(new TokenException(messageUtil.getMessageBy("error.retrieving.token")));
+                : Either.left(new TokenException("Erro ao obter o Token."));
     }
 
     /**

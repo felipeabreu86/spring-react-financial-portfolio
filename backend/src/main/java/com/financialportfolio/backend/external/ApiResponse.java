@@ -9,10 +9,11 @@ import com.financialportfolio.backend.external.dto.response.ApiErrorDto;
 public interface ApiResponse {
 
     /**
+     * Cria uma resposta de sucesso a ser retornada pela API.
      * 
-     * @param status
-     * @param obj
-     * @return
+     * @param status - HTTP Status de sucesso, por exemplo, 200.
+     * @param obj    - objeto a ser retornado como corpo da resposta.
+     * @return ResponseEntity.
      */
     default ResponseEntity<?> ApiSuccessResponse(HttpStatus status, Object obj) {
 
@@ -20,10 +21,11 @@ public interface ApiResponse {
     }
 
     /**
+     * Cria uma resposta de erro a ser retornada pela API.
      * 
-     * @param status
-     * @param e
-     * @return
+     * @param status - HTTP Status de sucesso, por exemplo, 404.
+     * @param e      - Exceção.
+     * @return ResponseEntity.
      */
     default ResponseEntity<?> ApiErrorResponse(HttpStatus status, Exception e) {
 
@@ -31,10 +33,11 @@ public interface ApiResponse {
     }
 
     /**
+     * Cria uma resposta de erro a ser retornada pela API.
      * 
-     * @param status
-     * @param error
-     * @return
+     * @param status - HTTP Status de sucesso, por exemplo, 404.
+     * @param error  - Descrição do erro em texto.
+     * @return ResponseEntity.
      */
     default ResponseEntity<?> ApiErrorResponse(HttpStatus status, String error) {
 

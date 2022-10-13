@@ -14,16 +14,18 @@ public interface UserService extends UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException;
 
     /**
+     * Realiza a busca do usuário pelo email.
      * 
-     * @param email
-     * @return
+     * @param email - email do usuário.
+     * @return Usuário.
      */
     Either<UsernameNotFoundException, User> findUserBy(String email);
 
     /**
+     * Cria um novo Usuário e o salva no banco de dados.
      * 
-     * @param user
-     * @return
+     * @param user - Usuário.
+     * @return Usuário.
      */
     Either<Exception, User> createNew(User user);
 

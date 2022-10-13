@@ -35,9 +35,10 @@ public final class CastUtil {
     }
 
     /**
+     * Realiza a conversão do texto de camelCase para Snake_Case.
      * 
-     * @param str
-     * @return
+     * @param str - texto
+     * @return texto em modo snake_case.
      */
     public static String castCamelToSnake(String str) {
 
