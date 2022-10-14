@@ -14,6 +14,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.financialportfolio.backend.core.exception.InvalidUrlException;
+import com.financialportfolio.backend.core.util.ConstantsUtil;
 import com.financialportfolio.backend.domain.model.User;
 import com.financialportfolio.backend.domain.service.EmailService;
 
@@ -68,7 +69,8 @@ public class EmailServiceImpl implements EmailService {
             throw new InvalidUrlException("URL de recuperação de e-mail inválida: " + appUrl);
         }
 
-        return String.format(appUrl + "?email=%s&token=%s", username, token);
+        return String
+                .format(appUrl + "?" + ConstantsUtil.EMAIL + "=%s&" + ConstantsUtil.TOKEN + "=%s", username, token);
     }
 
     /**

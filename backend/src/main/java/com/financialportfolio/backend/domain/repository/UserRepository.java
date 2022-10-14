@@ -33,4 +33,12 @@ public interface UserRepository {
      */
     Either<Exception, User> saveOrUpdate(User user);
 
+    /**
+     * Remove o usuário do banco de dados.
+     * 
+     * @param user - usuário.
+     * @return quantidade de registros removidos do banco de dados.
+     */
+    Either<Exception, Integer> delete(User user);
+
 }

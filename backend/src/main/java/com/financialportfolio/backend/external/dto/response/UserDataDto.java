@@ -2,16 +2,16 @@ package com.financialportfolio.backend.external.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class UserCreatedDto {
+public class UserDataDto {
 
     @JsonProperty("user_id")
     private Long userId;
 
-    public UserCreatedDto() {
+    public UserDataDto() {
         super();
     }
 
-    public UserCreatedDto(Long userId) {
+    public UserDataDto(Long userId) {
         this();
         this.userId = userId;
     }

@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.financialportfolio.backend.domain.service.TokenService;
-import com.financialportfolio.backend.external.ApiResponse;
+import com.financialportfolio.backend.external.BaseController;
 import com.financialportfolio.backend.external.dto.request.LoginFormDto;
 import com.financialportfolio.backend.external.dto.response.AuthenticationDataDto;
 import com.financialportfolio.backend.external.dto.response.TokenDto;
 
 @RestController
 @RequestMapping("/auth")
-public class AuthenticationController implements ApiResponse {
+public class AuthenticationController implements BaseController {
 
     @Autowired  
     private AuthenticationManager authManager;

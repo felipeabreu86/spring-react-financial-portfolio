@@ -54,4 +54,15 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
+    @Override
+    public Either<Exception, Integer> delete(User user) {
+
+        try {
+            userDao.delete(user);
+            return Either.right(1);
+        } catch (Exception e) {
+            return Either.left(e);
+        }
+    }
+
 }

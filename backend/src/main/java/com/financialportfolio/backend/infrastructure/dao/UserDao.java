@@ -9,7 +9,7 @@ import com.financialportfolio.backend.domain.model.User;
 
 @Repository
 public interface UserDao extends JpaRepository<User, Long> {
-    
+
     /**
      * Realiza a busca por usuário no banco de dados filtrando pelo email.
      * 

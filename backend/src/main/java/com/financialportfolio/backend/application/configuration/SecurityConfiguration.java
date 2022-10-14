@@ -42,6 +42,7 @@ public class SecurityConfiguration {
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
                 .antMatchers(HttpMethod.POST, "/user/register").permitAll()
                 .antMatchers(HttpMethod.POST, "/user/recovery-password").permitAll()
+                .antMatchers(HttpMethod.PUT, "/user/change-password").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
