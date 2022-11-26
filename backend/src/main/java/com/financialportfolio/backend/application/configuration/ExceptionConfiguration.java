@@ -20,7 +20,7 @@ public class ExceptionConfiguration {
         /**
          * Esta configuração é necessária para direcionar o erro 404 (NOT FOUND) para
          * ser tratado pelo método handleNoHandlerFoundException da classe
-         * {@link ErrorController}}, caso contrário, a resposta enviada ao solicitante
+         * {@link ErrorController}, caso contrário, a resposta enviada ao solicitante
          * seria a resposta padrão do Spring Framework.
          */
         dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);

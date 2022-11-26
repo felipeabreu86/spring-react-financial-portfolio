@@ -63,14 +63,16 @@ public class EmailServiceImpl implements EmailService {
                 schemes[0] + "://" + 
                 request.getServerName() + ":" + 
                 request.getServerPort() + 
-                request.getHeader("Change-Password-Uri")).trim();
+                request.getHeader(ConstantsUtil.CHANGE_PASSWORD_URI)).trim();
 
         if (!(new UrlValidator(schemes)).isValid(appUrl)) {
             throw new InvalidUrlException("URL de recuperação de e-mail inválida: " + appUrl);
         }
 
-        return String
-                .format(appUrl + "?" + ConstantsUtil.EMAIL + "=%s&" + ConstantsUtil.TOKEN + "=%s", username, token);
+        return String.format(
+                appUrl + "?" + ConstantsUtil.EMAIL + "=%s&" + ConstantsUtil.TOKEN + "=%s", 
+                username, 
+                token);
     }
 
     /**
@@ -88,7 +90,9 @@ public class EmailServiceImpl implements EmailService {
             final String token, 
             final User user) throws MessagingException {
 
-        final String dataHora = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Calendar.getInstance().getTime())
+        final String dataHora = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+                .format(Calendar.getInstance()
+                .getTime())
                 .toString();
 
         final String bodyMessage = new StringBuilder()
@@ -96,8 +100,10 @@ public class EmailServiceImpl implements EmailService {
                 .append("Recebemos uma solicitação para restaurar sua senha de acesso em nosso site.<br/>")
                 .append("Ela ocorreu em: <b>" + dataHora + "</b>.<br/><br/>")
                 .append("Se você reconhece essa ação, clique no link abaixo para prosseguir:<br/><br/>")
-                .append("<a href='" + url + "'>REDEFINIR SENHA</a><br/><br/>").append("Atenciosamente,<br/>")
-                .append("<b>Equipe Portfólio Financeiro</b>").toString();
+                .append("<a href='" + url + "'>REDEFINIR SENHA</a><br/><br/>")
+                .append("Atenciosamente,<br/>")
+                .append("<b>Equipe Portfólio Financeiro</b>")
+                .toString();
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         mimeMessage.setSubject("[Portfólio Financeiro] Recuperação de Senha");

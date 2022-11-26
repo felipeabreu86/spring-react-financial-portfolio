@@ -15,4 +15,8 @@ public final class ConstantsUtil {
     public static final String EMAIL = "email";
     public static final String TOKEN = "token";
 
+    // Headers
+
+    public static final String CHANGE_PASSWORD_URI = "Change-Password-Uri";
+
 }

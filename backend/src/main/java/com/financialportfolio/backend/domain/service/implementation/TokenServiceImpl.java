@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
@@ -25,6 +27,8 @@ import io.vavr.control.Either;
 @Service
 public class TokenServiceImpl implements TokenService {
 
+    private final Log logger = LogFactory.getLog(getClass());
+
     /**
      * Tempo de vida útil do Token do tipo Bearer em milisegundos.
      */
@@ -36,7 +40,7 @@ public class TokenServiceImpl implements TokenService {
      */
     @Value("${api.jwt.secret}")
     private String secret;
-    
+
     @Override
     public boolean isTokenValid(String token) {
         
@@ -45,6 +49,7 @@ public class TokenServiceImpl implements TokenService {
         try {
             Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token);
         } catch (Exception e) {
+            logger.info(e.getLocalizedMessage());
             isValid = false;
         }
         
@@ -84,7 +89,7 @@ public class TokenServiceImpl implements TokenService {
                 userData = JsonUtil.readValue(subject, UserDataDto.class);
             }
         } catch (Exception e) {
-            
+            logger.info(e.getLocalizedMessage());
         }
 
         return userData.isPresent() 
@@ -111,7 +116,7 @@ public class TokenServiceImpl implements TokenService {
             expirationDate = Optional.ofNullable(
                     Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody().getExpiration());
         } catch (Exception e) {
-
+            logger.info(e.getLocalizedMessage());
         }
 
         return expirationDate.isPresent()

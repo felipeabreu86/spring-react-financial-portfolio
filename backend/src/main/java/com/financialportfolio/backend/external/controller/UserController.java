@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.financialportfolio.backend.core.exception.UserNotFoundException;
+import com.financialportfolio.backend.core.util.ConstantsUtil;
 import com.financialportfolio.backend.domain.model.PasswordRecoveryToken;
 import com.financialportfolio.backend.domain.model.User;
 import com.financialportfolio.backend.domain.service.EmailService;
@@ -64,7 +65,7 @@ public class UserController implements BaseController {
             value = "/recovery-password",
             produces = MediaType.APPLICATION_JSON_VALUE, 
             consumes = MediaType.APPLICATION_JSON_VALUE,
-            headers = { "Change-Password-Uri" })
+            headers = { ConstantsUtil.CHANGE_PASSWORD_URI })
     public ResponseEntity<?> recoveryPassword(
             final HttpServletRequest request, 
             @Valid @RequestBody RecoveryPasswordDto forgotPasswordForm) {

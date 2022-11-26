@@ -4,10 +4,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public final class CastUtil {
+
+    private static Log logger;
 
     private CastUtil() {
         super();
+        logger = LogFactory.getLog(getClass());
     }
 
     /**
@@ -27,7 +33,7 @@ public final class CastUtil {
             try {
                 result.add(clazz.cast(o));
             } catch (ClassCastException e) {
-                System.out.println(e.getMessage());
+                logger.info(e.getLocalizedMessage());
             }
         }
 
